@@ -24,14 +24,14 @@ public class MazeMaker : MonoBehaviour
 
         TheMaze = new Maze[NumofNode];
     }
-
+    
     public void MakeConnections(int LeftNode)
     {
         if (LeftNode == 0) { return; }
 
         //make connections
 
-        TheMaze[0].type = "Start";
+        TheMaze[0]=new Maze("Start");
         TheMaze[0].connections[0] = TheMaze[1];
         TheMaze[0].connections[1] = TheMaze[2];
         TheMaze[0].connections[2] = TheMaze[3];
