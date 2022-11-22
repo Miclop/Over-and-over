@@ -12,12 +12,13 @@ public class RoomSpawner : MonoBehaviour
 	private int rand;
 	public bool spawned = false;
 	private RoomTemplates RT;
-
+	private GameObject TheMaze;
     private void Start()
     {
       RT = GameObject.FindGameObjectWithTag("Rooms").GetComponent<RoomTemplates>();
-	 // Destroy(gameObject, 4f);
-	  Invoke("Spawn", 0.1f);
+	  TheMaze = GameObject.FindGameObjectWithTag("123");
+		// Destroy(gameObject, 4f);
+		Invoke("Spawn", 0.1f);
 	}
 	void Spawn()
 	{
@@ -27,25 +28,29 @@ public class RoomSpawner : MonoBehaviour
 			{
 				// Need to spawn a room with a BOTTOM door.
 				rand = Random.Range(0, RT.BottomRooms.Length);
-				Instantiate(RT.BottomRooms[rand], transform.position, RT.BottomRooms[rand].transform.rotation);
+				GameObject tempGO =Instantiate(RT.BottomRooms[rand], transform.position, RT.BottomRooms[rand].transform.rotation);
+				tempGO.transform.parent = TheMaze.transform;
 			}
 			else if (OpeningDirection == 2)
 			{
 				// Need to spawn a room with a TOP door.
 				rand = Random.Range(0, RT.TopRooms.Length);
-				Instantiate(RT.TopRooms[rand], transform.position, RT.TopRooms[rand].transform.rotation);
+				GameObject tempGO = Instantiate(RT.TopRooms[rand], transform.position, RT.TopRooms[rand].transform.rotation);
+				tempGO.transform.parent = TheMaze.transform;
 			}
 			else if (OpeningDirection == 1)
 			{
 				// Need to spawn a room with a LEFT door.
 				rand = Random.Range(0, RT.LeftRooms.Length);
-				Instantiate(RT.LeftRooms[rand], transform.position, RT.LeftRooms[rand].transform.rotation);
+				GameObject tempGO = Instantiate(RT.LeftRooms[rand], transform.position, RT.LeftRooms[rand].transform.rotation);
+				tempGO.transform.parent = TheMaze.transform;
 			}
 			else if (OpeningDirection == 3)
 			{
 				// Need to spawn a room with a RIGHT door.
 				rand = Random.Range(0, RT.RightRooms.Length);
-				Instantiate(RT.RightRooms[rand], transform.position, RT.RightRooms[rand].transform.rotation);
+				GameObject tempGO = Instantiate(RT.RightRooms[rand], transform.position, RT.RightRooms[rand].transform.rotation);
+				tempGO.transform.parent = TheMaze.transform;
 			}
 			spawned = true;
 		}
@@ -60,6 +65,7 @@ public class RoomSpawner : MonoBehaviour
 			
 
 		}
+		spawned = true;
 	}
 
 }
