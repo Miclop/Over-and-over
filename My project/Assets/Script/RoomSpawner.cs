@@ -18,7 +18,7 @@ public class RoomSpawner : MonoBehaviour
       RT = GameObject.FindGameObjectWithTag("Rooms").GetComponent<RoomTemplates>();
 	  TheMaze = GameObject.FindGameObjectWithTag("123");
 		// Destroy(gameObject, 4f);
-		Invoke("Spawn", 0.1f);
+		Invoke("Spawn", 0.5f);
 	}
 	void Spawn()
 	{
