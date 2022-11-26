@@ -59,7 +59,7 @@ public class RoomSpawner : MonoBehaviour
 	{
 		if (other.CompareTag("SpawnPoint"))
 		{
-			Debug.Log("hit");
+			//Debug.Log("hit");
 				//Instantiate(RT.closedRoom, transform.position, Quaternion.identity);
 				Destroy(gameObject);
 			
