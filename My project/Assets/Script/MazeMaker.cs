@@ -5,49 +5,69 @@ using UnityEngine;
 
 public class MazeMaker : MonoBehaviour
 {
+    //for timer
+    private float Timer;
+    private float TimetoReset = 4f;
+    private bool Checking;
 
-    private int Numof4Way, Numof3Way, Numof2WayS, Numof2WayT, NumofDead;
+    public GameObject StartRoom;
 
-    private int NumofNode;
-
-    private Maze[] TheMaze;
-    // initialize 
-    void Start()
+     void Start()
     {
-        Numof4Way = 4;
-        Numof2WayS = 4;
-        Numof2WayT = 4;
-        Numof3Way = 6;
-        NumofDead = 4;
-
-        NumofNode = Numof4Way + Numof3Way + Numof2WayS + Numof2WayT + NumofDead + 1;
-
-        TheMaze = new Maze[NumofNode];
+        Spawnstart();
+        Checking = true;
     }
-    
-    public void MakeConnections(int LeftNode)
-    {
-        if (LeftNode == 0) { return; }
-
-        //make connections
-
-        TheMaze[0]=new Maze("Start");
-        TheMaze[0].connections[0] = TheMaze[1];
-        TheMaze[0].connections[1] = TheMaze[2];
-        TheMaze[0].connections[2] = TheMaze[3];
-
-        //recursive call
-        MakeConnections(LeftNode - 1);
-
-    }
-
-
-
-
-    
-    // Update is called once per frame
     void Update()
     {
-        
+        if (Checking)
+        {
+            Timer += Time.deltaTime;
+            if (Timer >= TimetoReset)
+            {
+
+                if (CheckMaze())
+                {
+                    Checking = false;
+                    Debug.Log("Check Maze");
+                }
+                else
+                {
+                    Invoke("Spawnstart", 0.1f);
+                }
+
+                Timer = 0;
+
+            }
+        }
+
+     }
+    void DestroyAll()
+    {
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+            MazeInfo.NumofRoom = 0;
+        }
+
+    
+    }
+    void Spawnstart()
+    {
+        Debug.Log("Spawn Start");
+        GameObject tempGO= Instantiate(StartRoom,transform.position,Quaternion.identity);
+        tempGO.transform.parent = this.transform;
+        MazeInfo.NumofRoom +=1;
+    }
+    bool CheckMaze()
+    {
+        if (MazeInfo.NumofRoom < 24)
+        {
+            DestroyAll();
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 }

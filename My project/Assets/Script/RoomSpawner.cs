@@ -13,12 +13,12 @@ public class RoomSpawner : MonoBehaviour
 	public bool spawned = false;
 	private RoomTemplates RT;
 	private GameObject TheMaze;
-    private void Start()
+    void Start()
     {
       RT = GameObject.FindGameObjectWithTag("Rooms").GetComponent<RoomTemplates>();
 	  TheMaze = GameObject.FindGameObjectWithTag("123");
-		// Destroy(gameObject, 4f);
-		Invoke("Spawn", 0.5f);
+		//Destroy(gameObject, 4f);
+		Invoke("Spawn", 0.1f);
 	}
 	void Spawn()
 	{
@@ -26,31 +26,103 @@ public class RoomSpawner : MonoBehaviour
 		{
 			if (OpeningDirection == 0)
 			{
-				// Need to spawn a room with a BOTTOM door.
-				rand = Random.Range(0, RT.BottomRooms.Length);
+                if (MazeInfo.NumofRoom <= 10)
+                {
+					rand = Random.Range(0, 2);
+				}
+				else if (MazeInfo.NumofRoom <= 20)
+                {
+					rand = Random.Range(0, RT.BottomRooms.Length);
+				}
+                else if (MazeInfo.NumofRoom <= 30)
+                {
+					rand = Random.Range(0, RT.BottomRooms.Length);
+				}
+                else
+                {
+					spawned = true;
+					return;
+				}
+				
 				GameObject tempGO =Instantiate(RT.BottomRooms[rand], transform.position, RT.BottomRooms[rand].transform.rotation);
 				tempGO.transform.parent = TheMaze.transform;
+				MazeInfo.NumofRoom++;
+				Debug.Log(MazeInfo.NumofRoom);
+
 			}
 			else if (OpeningDirection == 2)
 			{
-				// Need to spawn a room with a TOP door.
-				rand = Random.Range(0, RT.TopRooms.Length);
+				if (MazeInfo.NumofRoom <= 10)
+				{
+					rand = Random.Range(0, 2);
+				}
+				else if (MazeInfo.NumofRoom <= 20)
+				{
+					rand = Random.Range(0, RT.TopRooms.Length);
+				}
+				else if (MazeInfo.NumofRoom <= 30)
+				{
+					rand = Random.Range(0, RT.TopRooms.Length);
+				}
+				else
+				{
+					spawned = true;
+					return;
+				}
 				GameObject tempGO = Instantiate(RT.TopRooms[rand], transform.position, RT.TopRooms[rand].transform.rotation);
 				tempGO.transform.parent = TheMaze.transform;
+				MazeInfo.NumofRoom++;
+				Debug.Log(MazeInfo.NumofRoom);
 			}
 			else if (OpeningDirection == 1)
 			{
-				// Need to spawn a room with a LEFT door.
-				rand = Random.Range(0, RT.LeftRooms.Length);
+				if (MazeInfo.NumofRoom <= 10)
+				{
+					rand =0;
+				}
+				else if (MazeInfo.NumofRoom <= 20)
+				{
+					rand = Random.Range(0, RT.LeftRooms.Length);
+				}
+				else if (MazeInfo.NumofRoom <= 30)
+				{
+					rand = Random.Range(0, RT.LeftRooms.Length);
+				}
+				 else
+				{
+					spawned = true;
+					return;
+				}
+				//rand = Random.Range(0, RT.LeftRooms.Length);
 				GameObject tempGO = Instantiate(RT.LeftRooms[rand], transform.position, RT.LeftRooms[rand].transform.rotation);
 				tempGO.transform.parent = TheMaze.transform;
+				MazeInfo.NumofRoom++;
+				Debug.Log(MazeInfo.NumofRoom);
 			}
 			else if (OpeningDirection == 3)
 			{
-				// Need to spawn a room with a RIGHT door.
+				if (MazeInfo.NumofRoom <= 10)
+				{
+					rand = Random.Range(0,2);
+				}
+				else if (MazeInfo.NumofRoom <= 20)
+				{
+					rand = Random.Range(0, RT.RightRooms.Length);
+				}
+				else if (MazeInfo.NumofRoom <= 30)
+				{
+					rand = Random.Range(0, RT.RightRooms.Length);
+				}
+				else
+				{
+					spawned = true;
+					return;
+				}
 				rand = Random.Range(0, RT.RightRooms.Length);
 				GameObject tempGO = Instantiate(RT.RightRooms[rand], transform.position, RT.RightRooms[rand].transform.rotation);
 				tempGO.transform.parent = TheMaze.transform;
+				MazeInfo.NumofRoom++;
+				//Debug.Log(MazeInfo.NumofRoom);
 			}
 			spawned = true;
 		}
@@ -59,7 +131,8 @@ public class RoomSpawner : MonoBehaviour
 	{
 		if (other.CompareTag("SpawnPoint"))
 		{
-			//Debug.Log("hit");
+		
+				//Debug.Log("hit");
 				//Instantiate(RT.closedRoom, transform.position, Quaternion.identity);
 				Destroy(gameObject);
 			

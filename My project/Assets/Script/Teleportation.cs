@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class Teleportation : MonoBehaviour
 {
-    public int Teleportdirecton;
+    
+    public int Teleportdirection;
     private GameObject Player;
-    private GameObject Maze;
+    private PlayerMovement PM;
 
     private void Start()
     {
         Player = GameObject.FindGameObjectWithTag("Player");
-        Maze = GameObject.FindGameObjectWithTag("123");
+        PM = Player.GetComponent<PlayerMovement>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -19,36 +20,38 @@ public class Teleportation : MonoBehaviour
 
         if (collision.CompareTag("Player"))
         {
-            //Debug.Log("hit");
             Teleport();
         }
     }
 
     void Teleport()
     {
-        if (Teleportdirecton == 0)
+        CameraControl.PlayerDir = Teleportdirection;
+        PlayerMovement.MovementDir = Teleportdirection;
+        PM.Rotates();
+        if (Teleportdirection == 0)
         {
             Player.transform.position = new Vector2(Player.transform.position.x, Player.transform.position.y - 0.5f);
+            CameraControl.CamMove = true;
             PlayerMovement.Teleporting = true;
-            Maze.transform.Rotate(0f, 0.0f, 180f, Space.World);
         }
-        else if(Teleportdirecton == 1)
+        else if(Teleportdirection == 1)
         {
             Player.transform.position = new Vector2(Player.transform.position.x- 0.5f, Player.transform.position.y);
             PlayerMovement.Teleporting = true;
-            Maze.transform.Rotate(0f, 0.0f, -90f, Space.World); 
+            CameraControl.CamMove = true;
         }
-        else if (Teleportdirecton == 2)
+        else if (Teleportdirection == 2)
         {
             Player.transform.position = new Vector2(Player.transform.position.x, Player.transform.position.y + 0.5f);
+            CameraControl.CamMove = true;
             PlayerMovement.Teleporting = true;
-            Maze.transform.Rotate(0f, 0.0f, 0.0f, Space.World);
         }
-        else if (Teleportdirecton == 3)
+        else if (Teleportdirection == 3)
         {
             Player.transform.position = new Vector2(Player.transform.position.x+ 0.5f, Player.transform.position.y);
+            CameraControl.CamMove = true;
             PlayerMovement.Teleporting = true;
-            Maze.transform.Rotate(0f, 0.0f, 90f, Space.World);
         }
     }
 
