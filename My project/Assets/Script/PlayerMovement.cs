@@ -2,10 +2,13 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    private Vector2 Dir;
+    private Vector3 camDirection;
     private float horizontal;
     private float vertical;
-    private float speed = 8f;
-    private int Movetype;
+    private Vector3 forward;
+    private Vector3 right;
+    private float speed = 0.01f;
     private Rigidbody2D rb;
 
 
@@ -23,24 +26,24 @@ public class PlayerMovement : MonoBehaviour
 
     //get Cam
     public CameraControl CamControl;
+    
 
-
+    //for movementControl
+    private bool notwall;
 
     private void Start()
     {
+        Dir = Vector3.zero; 
         rb = this.GetComponent<Rigidbody2D>();
         Teleporting = false;
         MovementDir = 2;
         PrevDir = 2;
-        Movetype = 0;
+        notwall = true;
     }
 
     void Update()
     {
-        horizontal = Input.GetAxisRaw("Horizontal");
-        vertical = Input.GetAxisRaw("Vertical");
-       
-     
+        
         if (Teleporting)
         {
             
@@ -56,57 +59,67 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        movement();
+        Dir.x = Input.GetAxisRaw("Horizontal");
+        Dir.y = Input.GetAxisRaw("Vertical");
        
-       
+        Vector2 desiredMoveDirection = Camera.main.transform.rotation * Dir;
+        Debug.Log(desiredMoveDirection);
+
+        rb.AddForce(new Vector2(desiredMoveDirection.x * speed, desiredMoveDirection.y * speed),ForceMode2D.Impulse);
+
+        /*
+        if(notwall)
+        transform.Translate(speed * Time.deltaTime * desiredMoveDirection);
+        else
+        transform.Translate(speed * Time.deltaTime * -desiredMoveDirection);
+        */
     }
-    
-    private void movement()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (Movetype == 0)
+        if (collision.CompareTag("wall"))
         {
-            transform.position = new Vector2(transform.position.x + 0.01f * horizontal, transform.position.y + 0.01f * vertical);
+            notwall = false;
         }
-        if (Movetype == 1)
-        {
-            transform.position = new Vector2(transform.position.x + 0.01f * vertical, transform.position.y - 0.01f * horizontal);
-        }
-        if (Movetype == 2)
-        {
-            transform.position = new Vector2(transform.position.x - 0.01f * horizontal, transform.position.y - 0.01f * vertical);
-        }
-        if (Movetype == 3)
-        {
-            transform.position = new Vector2(transform.position.x - 0.01f * vertical, transform.position.y + 0.01f * horizontal);
-        }
+
+        Debug.Log("in");
+
     }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("wall"))
+        {
+            notwall = true;
+        }
+
+        Debug.Log("out");
+
+    }
+
+
     public void Rotates()
     {
-        Debug.Log(PrevDir);
-        Debug.Log("/");
-        Debug.Log(MovementDir);
         if (!Teleporting)
         {
             if (PrevDir == 0)
             {
                 if (MovementDir == 0)
                 {
-                    Movetype = 0;
+
                 }
                 else if (MovementDir == 1)
                 {
-                    Movetype = 1;
+                    
                     CamControl.RotateLeft();
                 }
                 else if (MovementDir == 2)
                 {
-                    Movetype = 2;
+                   
                     CamControl.Rotate180();
                 }
 
                 else if (MovementDir == 3)
                 {
-                    Movetype = 3;
+                    
                     CamControl.RotateRight();
                 }
 
@@ -115,22 +128,22 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (MovementDir == 0)
                 {
-                    Movetype = 2;
+                    
                     CamControl.RotateRight();
                 }
                 else if (MovementDir == 1)
                 {
-                    Movetype = 3;
+                   
                 }
                 else if (MovementDir == 2)
                 {
-                    Movetype = 0;
+                    
                     CamControl.RotateLeft();
                 }
 
                 else if (MovementDir == 3)
                 {
-                    Movetype = 1;
+                   
                     CamControl.Rotate180();
                 }
 
@@ -140,22 +153,22 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (MovementDir == 0)
                 {
-                    Movetype = 2;
+                    
                     CamControl.Rotate180();
                 }
                 else if (MovementDir == 1)
                 {
-                    Movetype = 3;
+                   
                     CamControl.RotateRight();
                 }
                 else if (MovementDir == 2)
                 {
-                    Movetype = 0;
+                    
                 }
 
                 else if (MovementDir == 3)
                 {
-                    Movetype = 1;
+                    
                     CamControl.RotateLeft();
                 }
 
@@ -164,23 +177,23 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (MovementDir == 0)
                 {
-                    Movetype = 1;
+                    
                     CamControl.RotateLeft();
                 }
                 else if (MovementDir == 1)
                 {
-                    Movetype = 3;
+                    
                     CamControl.Rotate180();
                 }
                 else if (MovementDir == 2)
                 {
-                    Movetype = 3;
+                   
                     CamControl.RotateRight();
                 }
 
                 else if (MovementDir == 3)
                 {
-                    Movetype = 1;
+                    
                 }
 
             }
@@ -188,4 +201,5 @@ public class PlayerMovement : MonoBehaviour
         PrevDir = MovementDir;
     }
     
+
 }

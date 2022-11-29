@@ -8,6 +8,8 @@ TagManager:
   - 123
   - SpawnPoint
   - Rooms
+  - StartRoom
+  - wall
   layers:
   - Default
   - TransparentFX
