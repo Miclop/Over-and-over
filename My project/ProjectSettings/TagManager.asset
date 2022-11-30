@@ -10,6 +10,8 @@ TagManager:
   - Rooms
   - StartRoom
   - wall
+  - TP
+  - Crystal
   layers:
   - Default
   - TransparentFX

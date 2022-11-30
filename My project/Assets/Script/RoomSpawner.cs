@@ -43,7 +43,24 @@ public class RoomSpawner : MonoBehaviour
 					spawned = true;
 					return;
 				}
-				
+
+                if (MazeInfo.NumofRoom == 5)
+                {
+					GameObject temp = Instantiate(RT.Crystals[0], transform.position, RT.Crystals[0].transform.rotation);
+					temp.transform.parent = TheMaze.transform;
+				}
+				if (MazeInfo.NumofRoom == 10)
+				{
+					GameObject temp = Instantiate(RT.Crystals[1], transform.position, RT.Crystals[1].transform.rotation);
+					temp.transform.parent = TheMaze.transform;
+				}
+				if (MazeInfo.NumofRoom == 15)
+				{
+					GameObject temp = Instantiate(RT.Crystals[2], transform.position, RT.Crystals[2].transform.rotation);
+					temp.transform.parent = TheMaze.transform;
+				}
+
+
 				GameObject tempGO =Instantiate(RT.BottomRooms[rand], transform.position, RT.BottomRooms[rand].transform.rotation);
 				tempGO.transform.parent = TheMaze.transform;
 				MazeInfo.NumofRoom++;
@@ -69,6 +86,22 @@ public class RoomSpawner : MonoBehaviour
 					spawned = true;
 					return;
 				}
+
+				if (MazeInfo.NumofRoom == 5)
+				{
+					GameObject temp = Instantiate(RT.Crystals[0], transform.position, RT.Crystals[0].transform.rotation);
+					temp.transform.parent = TheMaze.transform;
+				}
+				if (MazeInfo.NumofRoom == 10)
+				{
+					GameObject temp = Instantiate(RT.Crystals[1], transform.position, RT.Crystals[1].transform.rotation);
+					temp.transform.parent = TheMaze.transform;
+				}
+				if (MazeInfo.NumofRoom == 15)
+				{
+					GameObject temp = Instantiate(RT.Crystals[2], transform.position, RT.Crystals[2].transform.rotation);
+					temp.transform.parent = TheMaze.transform;
+				}
 				GameObject tempGO = Instantiate(RT.TopRooms[rand], transform.position, RT.TopRooms[rand].transform.rotation);
 				tempGO.transform.parent = TheMaze.transform;
 				MazeInfo.NumofRoom++;
@@ -78,7 +111,7 @@ public class RoomSpawner : MonoBehaviour
 			{
 				if (MazeInfo.NumofRoom <= 10)
 				{
-					rand =0;
+					rand = Random.Range(0, 2);
 				}
 				else if (MazeInfo.NumofRoom <= 20)
 				{
@@ -94,6 +127,21 @@ public class RoomSpawner : MonoBehaviour
 					return;
 				}
 				//rand = Random.Range(0, RT.LeftRooms.Length);
+				if (MazeInfo.NumofRoom == 5)
+				{
+					GameObject temp = Instantiate(RT.Crystals[0], transform.position, RT.Crystals[0].transform.rotation);
+					temp.transform.parent = TheMaze.transform;
+				}
+				if (MazeInfo.NumofRoom == 10)
+				{
+					GameObject temp = Instantiate(RT.Crystals[1], transform.position, RT.Crystals[1].transform.rotation);
+					temp.transform.parent = TheMaze.transform;
+				}
+				if (MazeInfo.NumofRoom == 15)
+				{
+					GameObject temp = Instantiate(RT.Crystals[2], transform.position, RT.Crystals[2].transform.rotation);
+					temp.transform.parent = TheMaze.transform;
+				}
 				GameObject tempGO = Instantiate(RT.LeftRooms[rand], transform.position, RT.LeftRooms[rand].transform.rotation);
 				tempGO.transform.parent = TheMaze.transform;
 				MazeInfo.NumofRoom++;
@@ -117,6 +165,22 @@ public class RoomSpawner : MonoBehaviour
 				{
 					spawned = true;
 					return;
+				}
+
+				if (MazeInfo.NumofRoom == 5)
+				{
+					GameObject temp = Instantiate(RT.Crystals[0], transform.position, RT.Crystals[0].transform.rotation);
+					temp.transform.parent = TheMaze.transform;
+				}
+				if (MazeInfo.NumofRoom == 10)
+				{
+					GameObject temp = Instantiate(RT.Crystals[1], transform.position, RT.Crystals[1].transform.rotation);
+					temp.transform.parent = TheMaze.transform;
+				}
+				if (MazeInfo.NumofRoom == 15)
+				{
+					GameObject temp = Instantiate(RT.Crystals[2], transform.position, RT.Crystals[2].transform.rotation);
+					temp.transform.parent = TheMaze.transform;
 				}
 				rand = Random.Range(0, RT.RightRooms.Length);
 				GameObject tempGO = Instantiate(RT.RightRooms[rand], transform.position, RT.RightRooms[rand].transform.rotation);

@@ -7,7 +7,7 @@ public class MazeMaker : MonoBehaviour
 {
     //for timer
     private float Timer;
-    private float TimetoReset = 4f;
+    private float TimetoReset = 4.0f;
     private bool Checking;
 
     public GameObject StartRoom;

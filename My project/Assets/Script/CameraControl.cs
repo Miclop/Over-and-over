@@ -59,4 +59,10 @@ public class CameraControl : MonoBehaviour
         this.transform.Rotate(new Vector3(0f, 0f, 180f), Space.World);
     }
 
+    public void ResetCam()
+    {
+        this.transform.position= new Vector3(0, 0, -10);
+        this.transform.rotation= Quaternion.identity;
+    }
+
 }

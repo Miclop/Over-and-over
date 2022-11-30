@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
 
     //for timer
     private float Timer;
-    private float TimetoReset=1.0f;
+    private float TimetoReset=2.5f;
 
 
     //for teleporting
@@ -30,6 +30,9 @@ public class PlayerMovement : MonoBehaviour
 
     //for movementControl
     private bool notwall;
+
+    //for Fade
+    public FadeControll FC;
 
     private void Start()
     {
@@ -46,10 +49,13 @@ public class PlayerMovement : MonoBehaviour
         
         if (Teleporting)
         {
-            
+            rb.velocity = Vector2.zero;
+
+            FC.FadeOUT();
             Timer += Time.deltaTime;
             if(Timer >= TimetoReset)
             {
+                FC.FadeIN();
                 Timer = 0;
                 Teleporting = false;
             }
@@ -63,9 +69,8 @@ public class PlayerMovement : MonoBehaviour
         Dir.y = Input.GetAxisRaw("Vertical");
        
         Vector2 desiredMoveDirection = Camera.main.transform.rotation * Dir;
-        Debug.Log(desiredMoveDirection);
-
-        rb.AddForce(new Vector2(desiredMoveDirection.x * speed, desiredMoveDirection.y * speed),ForceMode2D.Impulse);
+        //Debug.Log(desiredMoveDirection);
+        if(!Teleporting)rb.AddForce(new Vector2(desiredMoveDirection.x * speed, desiredMoveDirection.y * speed),ForceMode2D.Impulse);
 
         /*
         if(notwall)
@@ -98,8 +103,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Rotates()
     {
-        if (!Teleporting)
-        {
+
             if (PrevDir == 0)
             {
                 if (MovementDir == 0)
@@ -197,9 +201,12 @@ public class PlayerMovement : MonoBehaviour
                 }
 
             }
-        }
+        
         PrevDir = MovementDir;
     }
     
-
+    public void ResetCam()
+    {
+        CamControl.ResetCam();
+    }
 }
