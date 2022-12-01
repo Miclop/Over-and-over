@@ -51,23 +51,23 @@ public class Teleportation : MonoBehaviour
 
         if (Teleportdirection == 0)
         {
-            Player.transform.position = new Vector2(Player.transform.position.x, Player.transform.position.y - 3f);
+            Player.transform.position = new Vector2(Player.transform.position.x, Player.transform.position.y - 2.5f);
             CameraControl.CamMove = true;
 
         }
         else if(Teleportdirection == 1)
         {
-            Player.transform.position = new Vector2(Player.transform.position.x- 3f, Player.transform.position.y);
+            Player.transform.position = new Vector2(Player.transform.position.x- 2.5f, Player.transform.position.y);
             CameraControl.CamMove = true;
         }
         else if (Teleportdirection == 2)
         {
-            Player.transform.position = new Vector2(Player.transform.position.x, Player.transform.position.y + 3f);
+            Player.transform.position = new Vector2(Player.transform.position.x, Player.transform.position.y + 2.5f);
             CameraControl.CamMove = true;
         }
         else if (Teleportdirection == 3)
         {
-            Player.transform.position = new Vector2(Player.transform.position.x + 3f, Player.transform.position.y);
+            Player.transform.position = new Vector2(Player.transform.position.x + 2.5f, Player.transform.position.y);
             CameraControl.CamMove = true;
         }
 

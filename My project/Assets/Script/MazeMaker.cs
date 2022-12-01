@@ -9,13 +9,20 @@ public class MazeMaker : MonoBehaviour
     private float Timer;
     private float TimetoReset = 4.0f;
     private bool Checking;
+    
 
     public GameObject StartRoom;
+    public GameObject LoadScreen;
+    public FadeControll FC;
 
-     void Start()
+    private AudioSource AS;
+
+    void Start()
     {
         Spawnstart();
+        AS = this.GetComponent<AudioSource>();
         Checking = true;
+        
     }
     void Update()
     {
@@ -28,7 +35,9 @@ public class MazeMaker : MonoBehaviour
                 if (CheckMaze())
                 {
                     Checking = false;
-                    Debug.Log("Check Maze");
+                    LoadScreen.SetActive(false);
+                    AS.Play();
+                    FC.FadeIN();
                 }
                 else
                 {

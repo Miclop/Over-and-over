@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using TMPro;
 public class PlayerMovement : MonoBehaviour
 {
     private Vector2 Dir;
@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     private float speed = 0.01f;
     private Rigidbody2D rb;
     private Animator Anime;
-
+    
 
     //for timer
     private float Timer;
@@ -30,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
 
     //for movementControl
     private bool notwall;
+    private bool started;
 
     //for Fade
     public FadeControll FC;
@@ -39,7 +40,11 @@ public class PlayerMovement : MonoBehaviour
     private Soundlib SB;
     private AudioSource AS;
 
-
+    //Text
+    public TextMeshProUGUI Numberleft;
+    public GameObject Spacebar;
+    public GameObject Text;
+    public GameObject End;
 
     private void Start()
     {
@@ -52,6 +57,7 @@ public class PlayerMovement : MonoBehaviour
         MovementDir = 2;
         PrevDir = 2;
         notwall = true;
+        started = false;
     }
 
     void Update()
@@ -104,7 +110,7 @@ public class PlayerMovement : MonoBehaviour
 
 
         //Debug.Log(desiredMoveDirection);
-        if (!Teleporting) {
+        if (!Teleporting && started) {
             rb.AddForce(new Vector2(desiredMoveDirection.x * speed, desiredMoveDirection.y * speed), ForceMode2D.Impulse);
         }
 
@@ -127,15 +133,42 @@ public class PlayerMovement : MonoBehaviour
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.CompareTag("Crystal")){
-            Debug.Log("in");
+            Spacebar.SetActive(true);
+        }
+        else
+        {
+            Spacebar.SetActive(false);
+        }
+
+        if (collision.CompareTag("book"))
+        {
+            Text.SetActive(true);
+        }
+        else
+        {
+            Text.SetActive(false);
+        }
+        if (collision.CompareTag("End"))
+        {
+            AS.clip = SB.Clips[3];
+            AS.Play();
+            End.SetActive(true);
         }
         if (collision.CompareTag("Crystal") && Input.GetKey(KeyCode.Space))
         {
+            
             PlayClearRuneSound();
             Destroy(collision.gameObject);
             MazeInfo.NumofRunes -= 1;
-           
+            if (MazeInfo.NumofRunes == 2)
+                Numberleft.SetText("TWO");
+            if (MazeInfo.NumofRunes == 1)
+                Numberleft.SetText("ONE");
+            if (MazeInfo.NumofRunes == 0)
+                Numberleft.SetText("ZERO");
+
         }
+
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -289,5 +322,9 @@ public class PlayerMovement : MonoBehaviour
         AS.clip = SB.Clips[0];
         AS.Play();
     }
-
+    
+    public void StartGame()
+    {
+        started = true;
+    }
 }
