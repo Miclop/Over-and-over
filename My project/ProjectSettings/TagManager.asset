@@ -12,6 +12,8 @@ TagManager:
   - wall
   - TP
   - Crystal
+  - book
+  - SoundLib
   layers:
   - Default
   - TransparentFX

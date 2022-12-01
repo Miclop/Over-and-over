@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 right;
     private float speed = 0.01f;
     private Rigidbody2D rb;
-
+    private Animator Anime;
 
 
     //for timer
@@ -34,10 +34,20 @@ public class PlayerMovement : MonoBehaviour
     //for Fade
     public FadeControll FC;
 
+
+    //Sound Lib
+    private Soundlib SB;
+    private AudioSource AS;
+
+
+
     private void Start()
     {
-        Dir = Vector3.zero; 
+        Dir = Vector3.zero;
+        AS = this.GetComponent<AudioSource>();
         rb = this.GetComponent<Rigidbody2D>();
+        SB= GameObject.FindGameObjectWithTag("SoundLib").GetComponent<Soundlib>();
+        Anime = this.GetComponent<Animator>();
         Teleporting = false;
         MovementDir = 2;
         PrevDir = 2;
@@ -65,12 +75,38 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (rb.velocity.magnitude <=0.05)
+        {
+            Anime.SetBool("isMoving", false); ;
+        }
+        else
+        {
+            Anime.SetBool("isMoving", true);
+        }
+
+        if (Input.GetAxisRaw("Horizontal") == 1)
+        {
+            Anime.SetBool("isReverse", false);
+        }
+        if (Input.GetAxisRaw("Horizontal") == -1)
+        {
+            Anime.SetBool("isReverse", true);
+        }
+
         Dir.x = Input.GetAxisRaw("Horizontal");
         Dir.y = Input.GetAxisRaw("Vertical");
-       
+
+      
+
+
         Vector2 desiredMoveDirection = Camera.main.transform.rotation * Dir;
+
+
+
         //Debug.Log(desiredMoveDirection);
-        if(!Teleporting)rb.AddForce(new Vector2(desiredMoveDirection.x * speed, desiredMoveDirection.y * speed),ForceMode2D.Impulse);
+        if (!Teleporting) {
+            rb.AddForce(new Vector2(desiredMoveDirection.x * speed, desiredMoveDirection.y * speed), ForceMode2D.Impulse);
+        }
 
         /*
         if(notwall)
@@ -85,9 +121,21 @@ public class PlayerMovement : MonoBehaviour
         {
             notwall = false;
         }
+        
 
-        Debug.Log("in");
-
+    }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Crystal")){
+            Debug.Log("in");
+        }
+        if (collision.CompareTag("Crystal") && Input.GetKey(KeyCode.Space))
+        {
+            PlayClearRuneSound();
+            Destroy(collision.gameObject);
+            MazeInfo.NumofRunes -= 1;
+           
+        }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -96,9 +144,10 @@ public class PlayerMovement : MonoBehaviour
             notwall = true;
         }
 
-        Debug.Log("out");
 
     }
+    
+ 
 
 
     public void Rotates()
@@ -112,18 +161,18 @@ public class PlayerMovement : MonoBehaviour
                 }
                 else if (MovementDir == 1)
                 {
-                    
+                    this.RotateLeft();
                     CamControl.RotateLeft();
                 }
                 else if (MovementDir == 2)
                 {
-                   
+                    this.Rotate180();
                     CamControl.Rotate180();
                 }
 
                 else if (MovementDir == 3)
                 {
-                    
+                    this.RotateRight();    
                     CamControl.RotateRight();
                 }
 
@@ -132,7 +181,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (MovementDir == 0)
                 {
-                    
+                    this.RotateRight();
                     CamControl.RotateRight();
                 }
                 else if (MovementDir == 1)
@@ -142,12 +191,13 @@ public class PlayerMovement : MonoBehaviour
                 else if (MovementDir == 2)
                 {
                     
+                    this.RotateLeft();
                     CamControl.RotateLeft();
                 }
 
                 else if (MovementDir == 3)
                 {
-                   
+                    this.Rotate180();
                     CamControl.Rotate180();
                 }
 
@@ -157,12 +207,12 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (MovementDir == 0)
                 {
-                    
+                    this.Rotate180();
                     CamControl.Rotate180();
                 }
                 else if (MovementDir == 1)
                 {
-                   
+                    this.RotateRight();
                     CamControl.RotateRight();
                 }
                 else if (MovementDir == 2)
@@ -172,7 +222,7 @@ public class PlayerMovement : MonoBehaviour
 
                 else if (MovementDir == 3)
                 {
-                    
+                    this.RotateLeft();
                     CamControl.RotateLeft();
                 }
 
@@ -181,17 +231,17 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (MovementDir == 0)
                 {
-                    
+                    this.RotateLeft();
                     CamControl.RotateLeft();
                 }
                 else if (MovementDir == 1)
                 {
-                    
+                    this.Rotate180();
                     CamControl.Rotate180();
                 }
                 else if (MovementDir == 2)
                 {
-                   
+                    this.RotateRight();
                     CamControl.RotateRight();
                 }
 
@@ -208,5 +258,36 @@ public class PlayerMovement : MonoBehaviour
     public void ResetCam()
     {
         CamControl.ResetCam();
+        this.transform.rotation = Quaternion.Euler(0, 0, 0);
     }
+    private void RotateLeft()
+    {
+        this.transform.Rotate(new Vector3(0f, 0f, -90f), Space.World);
+    }
+    private void RotateRight()
+    {
+        this.transform.Rotate(new Vector3(0f, 0f, 90f), Space.World);
+    }
+    private void Rotate180()
+    {
+        this.transform.Rotate(new Vector3(0f, 0f, -180f), Space.World);
+    }
+
+
+    public void PlayTeleSound()
+    {
+        AS.clip = SB.Clips[1];
+        AS.Play();
+    }
+    public void PlayTeleFailSound()
+    {
+        AS.clip = SB.Clips[2];
+        AS.Play();
+    }
+    public void PlayClearRuneSound()
+    {
+        AS.clip = SB.Clips[0];
+        AS.Play();
+    }
+
 }
